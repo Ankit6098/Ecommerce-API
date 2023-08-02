@@ -9,6 +9,9 @@ router.get("/", productsController.products);
 // To create a product
 router.post("/create", productsController.createProduct);
 
+// To Search Product by name
+router.get("/search/name", productsController.searchProduct);
+
 // To get a product by id
 router.get("/:productId", productsController.getProduct);
 
@@ -20,6 +23,5 @@ router.patch("/:productId/update_price", productsController.updatePrice);
 
 // To delete a product by id
 router.delete("/:productId", productsController.deleteProduct);
-
 
 module.exports = router;

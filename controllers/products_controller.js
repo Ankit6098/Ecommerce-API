@@ -38,6 +38,7 @@ module.exports.createProduct = async function(req, res) {
 // To get a one product by using id
 module.exports.getProduct = async function(req, res) {
     try {
+        console.log(req.query);
         const id = req.params.productId;
         const product = await Product.findById(id);
         if (product) {
@@ -57,6 +58,28 @@ module.exports.getProduct = async function(req, res) {
         res.status(500).json({
             message: "Internal Server Error",
         });
+    }
+}
+
+// To search product by using name
+module.exports.searchProduct = async function(req, res) {
+    try {
+        console.log("query******************", req.query);
+        const query = req.query.name;
+        const product = await Product.find({name: query});
+        if (product) {
+            res.status(200).json({
+                product: product
+            })
+        } else {
+            res.status(400).json({
+                message: `There is no product`
+            })
+        }
+    } catch {
+        res.status(500).json({
+            message: "Internel Server Error"
+        })
     }
 }
 
