@@ -64,9 +64,18 @@ module.exports.getProduct = async function(req, res) {
 // To search product by using name
 module.exports.searchProduct = async function(req, res) {
     try {
-        console.log("query******************", req.query);
-        const query = req.query.name;
-        const product = await Product.find({name: query});
+        // const query = req.query.name;
+        // const product = await Product.find(req.query);
+
+
+        const query = req.query;
+    
+        // If the 'name' query parameter exists, add the regex query to perform case-insensitive search
+        if (query.name) {
+        query.name = { $regex: query.name, $options: "i" };
+        }
+
+        const product = await Product.find(query);
         if (product) {
             res.status(200).json({
                 product: product
@@ -89,7 +98,7 @@ module.exports.updateProduct = async function(req, res) {
         const id = req.params.productId;
         const product = await Product.findByIdAndUpdate(id)
         if (product) {
-            product.quantity = req.query.number;
+            product.quantity = req.query.quantity;
             product.save();
             console.log('product updated');
             res.status(200).json({
